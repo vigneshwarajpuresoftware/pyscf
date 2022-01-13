@@ -23,6 +23,7 @@ import numpy as np
 from pyscf import gto
 from pyscf import lib
 from pyscf.pbc import gto as pgto
+from pyscf.pbc.gto import ecp
 
 
 L = 1.5
@@ -97,9 +98,9 @@ class KnownValues(unittest.TestCase):
         3.370137329  3.370137329  0.000000000''',
         mesh = [15]*3)
         rcut = max([cell.bas_rcut(ib, 1e-8) for ib in range(cell.nbas)])
-        self.assertEqual(cell.get_lattice_Ls(rcut=rcut).shape, (1361, 3))
-        rcut = max([cell.bas_rcut(ib, 1e-9) for ib in range(cell.nbas)])
         self.assertEqual(cell.get_lattice_Ls(rcut=rcut).shape, (1465, 3))
+        rcut = max([cell.bas_rcut(ib, 1e-9) for ib in range(cell.nbas)])
+        self.assertEqual(cell.get_lattice_Ls(rcut=rcut).shape, (1657, 3))
 
     def test_ewald(self):
         cell = pgto.Cell()
@@ -230,7 +231,7 @@ class KnownValues(unittest.TestCase):
         numpy.random.seed(12)
         kpts = numpy.random.random((4,3))
         kpts[0] = 0
-        self.assertEqual(list(cl1.nimgs), [34,23,20])
+        self.assertEqual(list(cl1.nimgs), [36,24,21])
         s0 = cl1.pbc_intor('int1e_ovlp_sph', hermi=0, kpts=kpts)
         self.assertAlmostEqual(lib.fp(s0[0]), 492.30658304804126, 4)
         self.assertAlmostEqual(lib.fp(s0[1]), 37.812956255000756-28.972806230140314j, 4)
@@ -241,7 +242,6 @@ class KnownValues(unittest.TestCase):
         self.assertAlmostEqual(lib.fp(s1), 492.30658304804126, 4)
 
     def test_ecp_pseudo(self):
-        from pyscf.pbc.gto import ecp
         cell = pgto.M(
             a = np.eye(3)*5,
             mesh = [9]*3,
@@ -258,7 +258,6 @@ class KnownValues(unittest.TestCase):
         cell.basis={'Na':'lanl2dz', 'H':'sto3g'}
         cell.ecp = {'Na':'lanl2dz'}
         cell.build()
-        # FIXME: ECP integrals segfault
         v1 = ecp.ecp_int(cell)
         mol = cell.to_mol()
         v0 = mol.intor('ECPscalar_sph')
@@ -417,4 +416,3 @@ class KnownValues(unittest.TestCase):
 if __name__ == '__main__':
     print("Full Tests for pbc.gto.cell")
     unittest.main()
-
