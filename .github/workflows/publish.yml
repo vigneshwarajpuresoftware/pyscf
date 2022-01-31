@@ -77,6 +77,34 @@ jobs:
             export TWINE_USERNAME=__token__
             export TWINE_PASSWORD="${{ secrets.PYPI_API_TOKEN }}"
             twine upload --verbose ${{ github.workspace }}/mac-wheels/*
+  
+  release-pypi-aarch64:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Set up QEMU
+        id: qemu
+        uses: docker/setup-qemu-action@v1    
+      - name: Build wheels
+        run: |
+            pip install wheel
+            python setup.py bdist_wheel -v --dist-dir ${{ github.workspace }}/aarch64-wheels
+      - name: List available wheels
+        run: |
+            ls ${{ github.workspace }}/mac-wheels
+      - name: Publish to PyPI
+        run: |
+            pip install twine
+            export TWINE_USERNAME=__token__
+            export TWINE_PASSWORD="${{ secrets.PYPI_API_TOKEN }}"
+            twine upload --verbose ${{ github.workspace }}/aarch64-wheels/*
 
   # This pipeline builds conda-python3.7 only
   release-conda-linux:
