@@ -5,6 +5,7 @@ on:
     types:
       # Note: editing the prerelease then marking as release does not trigger
       # this pipeline
+      - pyscf-aarch64
       - prereleased
       - released
 
