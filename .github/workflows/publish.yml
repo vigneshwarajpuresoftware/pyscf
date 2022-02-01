@@ -107,10 +107,10 @@ jobs:
           bash -exc '${{ env.py }} -m venv .env && \
           yum install -y python3-devel && \
           yum install -y python3-pip && \
-          pip install wheel && \
+          pip3 install wheel && \
           python3 setup.py bdist_wheel -v --dist-dir ${{ github.workspace }}/aarch64-wheels && \
           ls ${{ github.workspace }}/aarch64-wheels && \
-          pip install twine && \
+          pip3 install twine && \
           export TWINE_USERNAME=__token__ && \
           export TWINE_PASSWORD="${{ secrets.PYPI_API_TOKEN }}" && \
           twine upload --verbose ${{ github.workspace }}/aarch64-wheels/* && \
