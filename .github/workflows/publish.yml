@@ -108,6 +108,7 @@ jobs:
           yum install -y python3-devel && \
           yum install -y python3-pip && \
           pip3 install wheel && \
+          yum install -y make && \
           python3 setup.py bdist_wheel -v --dist-dir ${{ github.workspace }}/aarch64-wheels && \
           ls ${{ github.workspace }}/aarch64-wheels && \
           pip3 install twine && \
