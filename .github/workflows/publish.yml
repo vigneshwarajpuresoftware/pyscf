@@ -105,6 +105,7 @@ jobs:
           docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
           ${{ env.img }} \
           bash -exc '${{ env.py }} -m venv .env && \
+          ./build-wheels.sh && \
           yum install -y python3-devel && \
           yum install -y python3-pip && \
           pip3 install wheel && \
