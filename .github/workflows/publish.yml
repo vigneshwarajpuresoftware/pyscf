@@ -61,7 +61,6 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Build wheels
         run: |
-            ./docker/pypa-env/./build-wheels.sh
             pip install wheel
             python setup.py bdist_wheel -v --dist-dir ${{ github.workspace }}/mac-wheels
       - name: List available wheels
@@ -106,7 +105,6 @@ jobs:
           docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
           ${{ env.img }} \
           bash -exc '${{ env.py }} -m venv .env && \
-          pyscf/docker/pypa-env/./build-wheels.sh && \
           yum install -y python3-devel && \
           yum install -y python3-pip && \
           pip3 install wheel && \
