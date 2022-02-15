@@ -109,6 +109,7 @@ jobs:
           yum install -y sudo && \
           yum install -y dnf && \
           sudo dnf install -y cmake gcc-c++ make && \
+          cmake -DLAPACK_LIBRARIES=/usr/lib/liblapack.dll.a -DMPI_CXX_LIBRARIES=/usr/lib/libmpi_mpifh.dll.a ../jdftx-1.4.1/jdftx && \
           yum install -y python3-devel && \
           yum install -y python3-pip && \
           pip3 install wheel && \
