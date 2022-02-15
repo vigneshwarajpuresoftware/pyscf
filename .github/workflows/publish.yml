@@ -106,7 +106,6 @@ jobs:
           ${{ env.img }} \
           bash -exc '${{ env.py }} -m venv .env && \
           yum install -y epel-release && \
-          yum install -y DNF && \
           yum install -y sudo && \
           sudo dnf install cmake gcc-c++ make && \
           yum install -y python3-devel && \
